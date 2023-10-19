@@ -1,7 +1,10 @@
 # FT4 Weather Vanilla JS Demos
 
-<center>This text is centered.</center>
-
+<h1 align="center">
+   <b>
+        <a href="https://axios-http.com"><img src="https://axios-http.com/assets/logo.svg" /></a><br>
+    </b>
+</h1>
 ## Demonstrating using vanilla JS to show weather for a given location
 
 ### Used the browser geo location api
