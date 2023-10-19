@@ -23,4 +23,4 @@ Todo:
 
 [Open Weather Map] (https://openweathermap.org)
 
-![Thunderstorm] (weather.png)
+![Thunderstorm](weather.png)
