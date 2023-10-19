@@ -62,7 +62,7 @@ export class Interface {
       new Date(filtered.list[filtered.list.length - 1].dt * 1000)
     );
 
-    this.root.innerHTML = html.join("");
+    this.root.innerHTML = html.join(" ");
   };
 
   createWeatherItem = (item) => {
