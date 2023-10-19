@@ -50,4 +50,14 @@ Holiday
 - [x] Check spelling
 - [ ] Tidy interface
 
+:)
+
+:joy:
+
+This is ==very important==
+
+h~2~0
+
+x^2^
+
 [^1]: Some more data
