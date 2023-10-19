@@ -6,7 +6,7 @@
 
 This project _containes_ multiple stages of the development of the **final product.**
 
-> A student sad it was cool
+> A student said it was cool
 
 Todo:
 
@@ -24,3 +24,30 @@ Todo:
 [Open Weather Map] (https://openweathermap.org)
 
 ![Thunderstorm](weather.png)
+
+# May or may not work
+
+| Name | Age |
+| ---- | --- |
+| Russell | 40 |
+| Sally | 100 |
+
+This function updated the DOM
+
+```
+clearWeather = () => {
+    this.root.innerHTML = ``;
+  };
+```
+
+This relates to this [^1]
+
+Holiday
+: A place you go to
+
+~~ Fix HTML ~~
+
+- [x] Check spelling
+- [ ] Tidy interface
+
+[^1]: Some more data
