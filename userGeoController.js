@@ -31,7 +31,7 @@ export const listenForChoice = () => {
 
     // set(locationInput, result);
     const weather = await axios.get(
-      `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=37b29f091f8754cf8600dea56dee3863`
+      `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=37b29f091f8754cf8600dea56dee3863`
     );
 
     //task to the setInterface stuff and it can sort the interface
@@ -59,7 +59,7 @@ export const userGetWeather = async () => {
         choicesAPIData = dataFromDisk;
       } else {
         const { data } = await axios.get(
-          `http://api.openweathermap.org/geo/1.0/direct?q=${locationInput}&limit=0&appid=37b29f091f8754cf8600dea56dee3863`
+          `https://api.openweathermap.org/geo/1.0/direct?q=${locationInput}&limit=0&appid=37b29f091f8754cf8600dea56dee3863`
         );
         choicesAPIData = data; //from the api
       }
