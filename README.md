@@ -1,6 +1,7 @@
 # FT4 Weather Vanilla JS Demos
 
-<p style="color:blue">Make this text blue.</p>
+<center>This text is centered.</center>
+
 ## Demonstrating using vanilla JS to show weather for a given location
 
 ### Used the browser geo location api
