@@ -1,8 +1,10 @@
 import { Interface } from "./interface.js";
 import { get, set } from "./storage/sorageUtils.js";
+import { OWM_API_KEY, OWM_API_URL } from "./config.js";
 const locationInputRef = document.getElementById("location");
 const errorRef = document.getElementById("error");
 const choicesRef = document.getElementById("choices");
+
 
 let locationInput = "";
 let choicesAPIData;
@@ -31,7 +33,7 @@ export const listenForChoice = () => {
 
     // set(locationInput, result);
     const weather = await axios.get(
-      `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=37b29f091f8754cf8600dea56dee3863`
+      `${OWM_API_URL}/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${OWM_API_KEY}`
     );
 
     //task to the setInterface stuff and it can sort the interface
@@ -59,7 +61,7 @@ export const userGetWeather = async () => {
         choicesAPIData = dataFromDisk;
       } else {
         const { data } = await axios.get(
-          `https://api.openweathermap.org/geo/1.0/direct?q=${locationInput}&limit=0&appid=37b29f091f8754cf8600dea56dee3863`
+          `${OWM_API_URL}/geo/1.0/direct?q=${locationInput}&limit=0&appid=37b29f091f8754cf8600dea56dee3863`
         );
         choicesAPIData = data; //from the api
       }

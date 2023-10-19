@@ -1,3 +1,5 @@
+import { OWM_URL } from "./config.js";
+
 export class Interface {
   constructor() {
     this.root = document.getElementById("root");
@@ -72,7 +74,7 @@ export class Interface {
               <p>Temp: ${Math.round(item.main.temp - 271.15)}&deg;</p>
               <p>Humidity: ${Math.round(item.main.humidity)}%</p>
               <p>Description ${item.weather[0].description}</p>
-              <img src="https://openweathermap.org/img/wn/${
+              <img src="${OWM_URL}/img/wn/${
                 item.weather[0].icon
               }.png" alt="${item.weather[0].description}">
             </div>`;
