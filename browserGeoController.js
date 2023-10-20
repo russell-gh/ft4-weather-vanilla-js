@@ -13,7 +13,6 @@ export const browserGetWeather = async () => {
     );
 
     normalizeData(data);
-    console.log("Hi");
     _interface.setInterface(data);
   } catch (error) {}
 };

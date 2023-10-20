@@ -55,6 +55,3 @@ export class WeatherStats {
     return Math.abs(item.main.feels_like - item.main.temp);
   }
 }
-
-// const _weatherStats = new WeatherStats(sampleData.list);
-// console.log(_weatherStats, WeatherStats.feelsLikeDiff(sampleData.list[0]));

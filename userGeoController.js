@@ -5,15 +5,22 @@ import { normalizeData } from "./timeUtil.js";
 const locationInputRef = document.getElementById("location");
 const errorRef = document.getElementById("error");
 const choicesRef = document.getElementById("choices");
+const apiErrorRef = document.getElementById("api-error");
 
 let locationInput = "";
 let choicesAPIData;
 
 const _interface = new Interface();
 
+window.addEventListener("offline", () => {
+  apiErrorRef.innerHTML = `<p>Internet unavailable</p>`;
+});
+window.addEventListener("online", () => {
+  apiErrorRef.innerHTML = ``;
+});
+
 export const listenForChoice = () => {
   choicesRef.addEventListener("click", async (e) => {
-    console.log(e.target.id);
     //if you clicked outside and item, do nothing
     if (e.target.id === "choices") {
       return;
@@ -32,14 +39,18 @@ export const listenForChoice = () => {
     //make api call to the weather people using the long lat above
 
     // set(locationInput, result);
-    const weather = await axios.get(
-      `${OWM_API_URL}/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${OWM_API_KEY}`
-    );
+    try {
+      const weather = await axios.get(
+        `${OWM_API_URL}/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${OWM_API_KEY}`
+      );
 
-    normalizeData(weather.data);
+      normalizeData(weather.data);
 
-    //task to the setInterface stuff and it can sort the interface
-    _interface.setInterface(weather.data);
+      //task to the setInterface stuff and it can sort the interface
+      _interface.setInterface(weather.data);
+    } catch (e) {
+      apiErrorRef.innerHTML = `<p>API down, please try later</p>`;
+    }
   });
 };
 
@@ -56,8 +67,14 @@ export const userGetWeather = async () => {
 
     try {
       await schema.validateAsync({ location: locationInput });
-      errorRef.innerHTML = `
-      `;
+      errorRef.innerHTML = ``;
+    } catch (error) {
+      console.log("Error", error, errorRef);
+      errorRef.innerHTML = `Please check you input`;
+      return;
+    }
+
+    try {
       let dataFromDisk = get(locationInput);
       if (dataFromDisk) {
         choicesAPIData = dataFromDisk;
@@ -66,13 +83,13 @@ export const userGetWeather = async () => {
           `${OWM_API_URL}/geo/1.0/direct?q=${locationInput}&limit=0&appid=37b29f091f8754cf8600dea56dee3863`
         );
         choicesAPIData = data; //from the api
+        set(location, data);
       }
 
       //make the choice
       _interface.setChoices(choicesAPIData);
-    } catch (error) {
-      console.log("Error", error, errorRef);
-      errorRef.innerHTML = `Please check you input`;
+    } catch (e) {
+      apiErrorRef.innerHTML = `<p>API down, please try later</p>`;
     }
   });
 };
