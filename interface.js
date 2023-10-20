@@ -1,4 +1,5 @@
 import { OWM_URL } from "./config.js";
+import { WeatherStats } from "./stats.js";
 
 export class Interface {
   constructor() {
@@ -21,7 +22,7 @@ export class Interface {
 
   getWeatherStartingAt = (weather) => {
     const index = weather.list.findIndex((item) => {
-      const date = new Date(item.dt * 1000);
+      const date = new Date(item.dt);
       if (date.getHours() === 7) {
         return true;
       }
@@ -45,38 +46,74 @@ export class Interface {
       return this.createWeatherItem(item);
     });
 
-    //found the hotest day
-    console.log(filtered.list[0].main.temp);
-    filtered.list.sort((item1, item2) => {
-      if (item1.main.temp > item2.main.temp) {
-        return -1; //hotest
-      }
-      if (item1.main.temp < item2.main.temp) {
-        return 1;
-      }
-      return 0;
-    });
-    console.log("Hotest:", new Date(filtered.list[0].dt * 1000));
-    console.log(
-      "Coldest:",
-      new Date(filtered.list[filtered.list.length - 1].dt * 1000)
+    //have the weather data
+    const _weatherStats = new WeatherStats(weather.list);
+    const statsHTML = this.createStats(_weatherStats, weather);
+
+    this.root.innerHTML = statsHTML + html.join(" ");
+  };
+
+  createStats = (_weatherStats, weather) => {
+    const { humidity } = _weatherStats.maxHumidityItem.main;
+    const ws = _weatherStats;
+
+    const maxTemp = new Date(ws.maxTempItem.dt).toLocaleDateString("en-GB");
+
+    const minTemp = new Date(ws.minTempItem.dt).toLocaleDateString("en-GB");
+
+    const maxHumidity = new Date(ws.maxHumidityItem.dt).toLocaleDateString(
+      "en-GB"
     );
 
-    this.root.innerHTML = html.join(" ");
+    const nextDaySunny = ws.nextDaySunny
+      ? new Date(ws.nextDaySunny.dt).toDateString()
+      : "No SUN!";
+
+    const feelsLikeDiff = Math.round(
+      WeatherStats.feelsLikeDiff(weather.list[0])
+    );
+
+    return this.createStateHTML(
+      minTemp,
+      maxTemp,
+      maxHumidity,
+      nextDaySunny,
+      feelsLikeDiff,
+      humidity
+    );
   };
+
+  createStateHTML(
+    minTemp,
+    maxTemp,
+    maxHumidity,
+    nextDaySunny,
+    feelsLikeDiff,
+    humidity
+  ) {
+    return `<div class="stats">
+                <p>Hottest Day: ${maxTemp}</p>
+                <p>Coldest Day: ${minTemp}</p>
+                <p>Max Humidity Day: ${maxHumidity} is ${humidity}%</p>
+                <p>Next Sunny Day: ${nextDaySunny}</p>
+                ${
+                  feelsLikeDiff
+                    ? `<p>Current feels like diff: ${feelsLikeDiff}&deg;</p>`
+                    : ``
+                }
+            </div>`;
+  }
 
   createWeatherItem = (item) => {
     return `<div>
-              <h1>The weather at ${new Date(
-                item.dt * 1000
-              ).toLocaleString()} is:
+              <h1>The weather at ${new Date(item.dt).toLocaleString()} is:
               </h1>
               <p>Temp: ${Math.round(item.main.temp - 271.15)}&deg;</p>
               <p>Humidity: ${Math.round(item.main.humidity)}%</p>
               <p>Description ${item.weather[0].description}</p>
-              <img src="${OWM_URL}/img/wn/${
-                item.weather[0].icon
-              }.png" alt="${item.weather[0].description}">
+              <img src="${OWM_URL}/img/wn/${item.weather[0].icon}.png" alt="${
+      item.weather[0].description
+    }">
             </div>`;
   };
 }

@@ -1,10 +1,10 @@
 import { Interface } from "./interface.js";
 import { get, set } from "./storage/sorageUtils.js";
 import { OWM_API_KEY, OWM_API_URL } from "./config.js";
+import { normalizeData } from "./timeUtil.js";
 const locationInputRef = document.getElementById("location");
 const errorRef = document.getElementById("error");
 const choicesRef = document.getElementById("choices");
-
 
 let locationInput = "";
 let choicesAPIData;
@@ -35,6 +35,8 @@ export const listenForChoice = () => {
     const weather = await axios.get(
       `${OWM_API_URL}/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${OWM_API_KEY}`
     );
+
+    normalizeData(weather.data);
 
     //task to the setInterface stuff and it can sort the interface
     _interface.setInterface(weather.data);
